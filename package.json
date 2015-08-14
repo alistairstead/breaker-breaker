@@ -1,0 +1,46 @@
+{
+  "name": "breaker-breaker",
+  "version": "0.0.0",
+  "description": "Circuit-breaker solution using Proxy to allow all object methods to be wrapped with the breaker pattern",
+  "homepage": "",
+  "repository": "alistairstead/breaker-breaker",
+  "author": {
+    "name": "Alistair Stead",
+    "email": "alistair_stead@me.com",
+    "url": "www.designdisclosure.com"
+  },
+  "files": [
+    "dist"
+  ],
+  "main": "dist/index.js",
+  "keywords": [
+    "circuit",
+    "breaker",
+    "proxy",
+    "promise",
+    "callback"
+  ],
+  "devDependencies": {
+    "babel-core": "^5.5.0",
+    "chai": "^3.2.0",
+    "gulp": "^3.6.0",
+    "gulp-babel": "^5.1.0",
+    "gulp-coveralls": "^0.1.0",
+    "gulp-exclude-gitignore": "^1.0.0",
+    "gulp-istanbul": "^0.9.0",
+    "gulp-jscs": "^1.1.0",
+    "gulp-jshint": "^1.5.3",
+    "gulp-mocha": "^2.0.0",
+    "gulp-nsp": "^0.4.5",
+    "gulp-plumber": "^1.0.0",
+    "jshint-stylish": "^1.0.0"
+  },
+  "scripts": {
+    "prepublish": "gulp prepublish",
+    "test": "node --harmony-proxies ./node_modules/.bin/gulp"
+  },
+  "license": "Apache-2.0",
+  "dependencies": {
+    "harmony-reflect": "^1.4.0"
+  }
+}
