@@ -23,6 +23,7 @@
   "devDependencies": {
     "babel-core": "^5.5.0",
     "chai": "^3.2.0",
+    "cut-release": "^0.2.1",
     "gulp": "^3.6.0",
     "gulp-babel": "^5.1.0",
     "gulp-coveralls": "^0.1.0",
@@ -33,14 +34,22 @@
     "gulp-mocha": "^2.0.0",
     "gulp-nsp": "^0.4.5",
     "gulp-plumber": "^1.0.0",
-    "jshint-stylish": "^1.0.0"
+    "jshint-stylish": "^1.0.0",
+    "sinon": "^1.16.1",
+    "sinon-chai": "^2.8.0"
   },
   "scripts": {
+    "start": "gulp watch --harmony_proxies",
     "prepublish": "gulp prepublish",
-    "test": "node --harmony-proxies ./node_modules/.bin/gulp"
+    "test": "gulp test --full-trace --harmony_proxies",
+    "release": "cut-release"
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "harmony-reflect": "^1.4.0"
+    "bluebird": "^2.9.34",
+    "debug": "^2.2.0",
+    "error-subclass": "^1.0.2",
+    "harmony-reflect": "^1.4.0",
+    "lodash": "^3.10.1"
   }
 }

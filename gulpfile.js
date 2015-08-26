@@ -20,6 +20,11 @@ var handleErr = function (err) {
   process.exit(1);
 };
 
+// Rerun the task when a file changes
+gulp.task('watch', function () {
+  gulp.watch('./**/*.js', {read: true}, ['static', 'test', 'coveralls']);
+});
+
 gulp.task('static', function () {
   return gulp.src('**/*.js')
     .pipe(excludeGitignore())
@@ -35,26 +40,36 @@ gulp.task('nsp', function (cb) {
 });
 
 gulp.task('pre-test', function () {
-  return gulp.src('lib/**/*.js')    .pipe(babel())
-
-    .pipe(istanbul({includeUntested: true}))
+  return gulp.src('lib/**/*.js')
+    .pipe(babel())
+    .pipe(istanbul({
+      includeUntested: true,
+    }))
     .pipe(istanbul.hookRequire());
 });
 
 gulp.task('test', ['pre-test'], function (cb) {
   var mochaErr;
 
-  gulp.src('test/**/*.js')
+  gulp.src('test/**/*Spec.js')
     .pipe(plumber())
-    .pipe(mocha({reporter: 'spec'}))
-    .on('error', function (err) {
-      console.log(err);
+    .pipe(mocha({
+      'trace': true,
+      'trace-deprecation': true,
+      'reporter': 'spec',
+    }))
+
+    .pipe(istanbul.writeReports({
+      reporters: ['text', 'text-summary', 'json']
+    }))
+    .once('error', function (err) {
+      // console.log(err);
       mochaErr = err;
     })
-    .pipe(istanbul.writeReports())
-    .on('end', function () {
+    .once('end', function () {
       cb(mochaErr);
     });
+
 });
 
 gulp.task('coveralls', ['test'], function () {
