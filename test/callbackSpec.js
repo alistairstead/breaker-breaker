@@ -1,4 +1,4 @@
-/* global describe, it, beforeEach */
+/* global describe, it, beforeEach, context */
 
 'use strict'
 
@@ -47,7 +47,7 @@ describe('Handler', function () {
       proxied.methodWillSucceed(function () {
         arguments[1].should.equal('Success')
         done()
-      }).should.equal('return value')
+      }).toString().should.equal('CallbackTarget')
     })
 
     it('should return an error as the first argument to the callback on failure', function (done) {
@@ -66,7 +66,7 @@ describe('Handler', function () {
       }
     })
 
-    it('should break the circuit if the original member times out', function (done) {
+    it('should break the circuit if the original member exceeds the default time out', function (done) {
       proxied.methodWillTimeout(function delayedCallback () {
         spy(...arguments)
         spy.should.have.been.calledWith(new error.BreakerTimeoutError('Timeout error'))
@@ -74,6 +74,12 @@ describe('Handler', function () {
       })
     })
 
+    it('should not break the circuit if the original member does not exceed the default time out', function (done) {
+      proxied.methodWillBlockButNotTimeout(function delayedCallback () {
+        spy(...arguments)
+        spy.should.have.been.calledWith(null, 'Success')
+        done()
+      })
+    })
   })
-
 })

@@ -14,7 +14,13 @@ export class SyncronousTarget {
     throw new Error('Target threw an error')
   }
 
-  methodWillTimeout (milliseconds = 5000) {
+  methodWillTimeout (milliseconds = 3000) {
+    setTimeout(function () {
+      return 'timeout'
+    }, milliseconds)
+  }
+
+  methodWillBlockButNotTimeout (milliseconds = 500) {
     setTimeout(function () {
       return 'timeout'
     }, milliseconds)

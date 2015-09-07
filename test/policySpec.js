@@ -54,6 +54,7 @@ describe('Policy', function () {
     _.times(5, function () {
       state = policy.fail(state)
     })
+    state.failure_count.should.equal(5)
     policy.state(state).should.equal('OPEN')
   })
 
