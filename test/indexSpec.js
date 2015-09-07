@@ -1,33 +1,34 @@
-'use strict';
-import chai from 'chai';
+/* global describe, it */
 
-import {Reflect} from 'harmony-reflect';
+'use strict'
+import chai from 'chai'
 
-import {Breaker} from '../lib';
-import * as error from '../lib/error';
-import {Target} from './fixtures/target';
+chai.should()
 
-const should = chai.should();
+import { Reflect } from 'harmony-reflect'
+
+import { Breaker } from '../lib'
+import * as error from '../lib/error'
+import { SyncronousTarget } from './fixtures/syncronous'
 
 describe('Breaker', function () {
-
-  let breaker = Breaker.create(new Target(), {});
+  let breaker = Breaker.create(new SyncronousTarget(), {})
 
   it('should wrap the target and leave original methods intact', function () {
-    breaker.success().should.equal(true);
-    breaker.fail().should.equal(false);
-  });
+    breaker.methodWillSucceed().should.equal(true)
+    breaker.methodWillFail().should.equal(false)
+  })
 
   it('should break the circuit if the original method times out', function () {
     try {
-      breaker.timeout();
+      breaker.methodWillTimeout()
     } catch (e) {
-      e.should.be.an.instanceOf(error.BreakerOpenError);
+      e.should.be.an.instanceOf(error.BreakerOpenError)
     }
-  });
+  })
 
-  it('should break the circuit and call fail in a promise if the promise times out', function () {
+  it.skip('should break the circuit and call the callback with an Error if the async call times out', function () {})
 
-  });
+  it.skip('should break the circuit and call reject in a promise if the promise times out', function () {})
 
-});
+})

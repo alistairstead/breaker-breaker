@@ -1,91 +1,64 @@
-'use strict';
-var path = require('path');
-var gulp = require('gulp');
-var excludeGitignore = require('gulp-exclude-gitignore');
-var mocha = require('gulp-mocha');
-var jshint = require('gulp-jshint');
-var jscs = require('gulp-jscs');
-var istanbul = require('gulp-istanbul');
-var nsp = require('gulp-nsp');
-var plumber = require('gulp-plumber');
-var coveralls = require('gulp-coveralls');
-var babel = require('gulp-babel');
+'use strict'
+var path = require('path')
+var gulp = require('gulp')
+var gutil = require('gulp-util')
+var excludeGitignore = require('gulp-exclude-gitignore')
+var mocha = require('gulp-mocha')
+var istanbul = require('gulp-istanbul')
+var nsp = require('gulp-nsp')
+var plumber = require('gulp-plumber')
+var coveralls = require('gulp-coveralls')
+var babel = require('gulp-babel')
 
 // Initialize the babel transpiler so ES2015 files gets compiled
 // when they're loaded
-require('babel-core/register');
-
-var handleErr = function (err) {
-  console.log(err.message);
-  process.exit(1);
-};
+require('babel-core/register')
 
 // Rerun the task when a file changes
 gulp.task('watch', function () {
-  gulp.watch('./**/*.js', {read: true}, ['static', 'test', 'coveralls']);
-});
-
-gulp.task('static', function () {
-  return gulp.src('**/*.js')
-    .pipe(excludeGitignore())
-    .pipe(jshint('.jshintrc'))
-    .pipe(jshint.reporter('jshint-stylish'))
-    .pipe(jshint.reporter('fail'))
-    .pipe(jscs())
-    .on('error', handleErr);
-});
+  gulp.watch('./**/*.js', {read: true}, ['test'])
+})
 
 gulp.task('nsp', function (cb) {
-  nsp('package.json', cb);
-});
+  nsp('package.json', cb)
+})
 
 gulp.task('pre-test', function () {
   return gulp.src('lib/**/*.js')
     .pipe(babel())
     .pipe(istanbul({
-      includeUntested: true,
+      includeUntested: true
     }))
-    .pipe(istanbul.hookRequire());
-});
+    .pipe(istanbul.hookRequire())
+})
 
 gulp.task('test', ['pre-test'], function (cb) {
-  var mochaErr;
-
   gulp.src('test/**/*Spec.js')
     .pipe(plumber())
     .pipe(mocha({
-      'trace': true,
-      'trace-deprecation': true,
-      'reporter': 'spec',
+      reporter: 'spec',
+      harmony_proxies: true
     }))
-
     .pipe(istanbul.writeReports({
       reporters: ['text', 'text-summary', 'json']
     }))
-    .once('error', function (err) {
-      // console.log(err);
-      mochaErr = err;
-    })
-    .once('end', function () {
-      cb(mochaErr);
-    });
-
-});
+    .on('error', gutil.log)
+})
 
 gulp.task('coveralls', ['test'], function () {
   if (!process.env.CI) {
-    return;
+    return
   }
 
   return gulp.src(path.join(__dirname, 'coverage/lcov.info'))
-    .pipe(coveralls());
-});
+    .pipe(coveralls())
+})
 
 gulp.task('babel', function () {
   return gulp.src('lib/**/*.js')
     .pipe(babel())
-    .pipe(gulp.dest('dist'));
-});
+    .pipe(gulp.dest('dist'))
+})
 
-gulp.task('prepublish', ['nsp', 'babel']);
-gulp.task('default', ['static', 'test', 'coveralls']);
+gulp.task('prepublish', ['nsp', 'babel'])
+gulp.task('default', ['test', 'coveralls'])

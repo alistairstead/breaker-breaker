@@ -1,39 +1,37 @@
-'use strict';
-import chai from 'chai';
+/* global describe, it, beforeEach */
+'use strict'
+import chai from 'chai'
 
-import * as error from '../lib/error';
+import * as error from '../lib/error'
 
-const should = chai.should();
+const should = chai.should()
 
 describe('Error', function () {
-
   describe('BreakerOpenError', function () {
-
     it('should be an instance of BreakerOpenError', function () {
       try {
-        throwBreakerOpenError();
+        throwBreakerOpenError()
       } catch (e) {
-        e.should.be.an.instanceOf(error.BreakerOpenError);
+        e.should.be.an.instanceOf(error.BreakerOpenError)
       }
-    });
-  });
+    })
+  })
 
   describe('BreakerTimeoutError', function () {
-
     it('should be an instance of BreakerTimeoutError', function () {
       try {
-        throwBreakerTimeoutError();
+        throwBreakerTimeoutError()
       } catch (e) {
-        e.should.be.an.instanceOf(error.BreakerTimeoutError);
+        e.should.be.an.instanceOf(error.BreakerTimeoutError)
       }
-    });
-  });
-});
+    })
+  })
+})
 
 function throwBreakerOpenError () {
-  throw new error.BreakerOpenError('Test error');
+  throw new error.BreakerOpenError('Test error')
 }
 
 function throwBreakerTimeoutError () {
-  throw new error.BreakerTimeoutError('Test timeout error');
+  throw new error.BreakerTimeoutError('Test timeout error')
 }

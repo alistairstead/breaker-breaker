@@ -1,39 +1,31 @@
-'use strict';
+'use strict'
 
-import Promise from 'bluebird';
-
-function resolve () {
-  return 'Success';
-}
-
-function reject () {
-  return 'Fail';
-}
+import Promise from 'bluebird'
 
 export class PromiseTarget {
 
-  methodWillSucceed () {
+  methodWillSucceed (resolve, reject) {
     return new Promise(function (resolve, reject) {
-      resolve();
-    });
+      resolve('Success')
+    })
   }
 
-  methodWillFail () {
+  methodWillFail (resolve, reject) {
     return new Promise(function (resolve, reject) {
-      reject();
-    });
+      reject('Fail')
+    })
   }
 
-  mothodWillThrow () {
-    throw new Error('Method threw an error');
+  mothodWillThrow (resolve, reject) {
+    throw new Error('Method threw an error')
   }
 
-  methodWillTimeout (milliseconds=5000) {
+  methodWillTimeout (resolve, reject, milliseconds = 5000) {
     return new Promise(function (resolve, reject) {
       setTimeout(function () {
-        reject();
-      }, milliseconds);
-    });
+        reject()
+      }, milliseconds)
+    })
 
   }
 

@@ -22,6 +22,8 @@
   ],
   "devDependencies": {
     "babel-core": "^5.5.0",
+    "babel-eslint": "^4.1.1",
+    "bluebird": "^2.9.34",
     "chai": "^3.2.0",
     "cut-release": "^0.2.1",
     "gulp": "^3.6.0",
@@ -34,22 +36,32 @@
     "gulp-mocha": "^2.0.0",
     "gulp-nsp": "^0.4.5",
     "gulp-plumber": "^1.0.0",
+    "gulp-util": "^3.0.6",
     "jshint-stylish": "^1.0.0",
     "sinon": "^1.16.1",
-    "sinon-chai": "^2.8.0"
+    "sinon-chai": "^2.8.0",
+    "snazzy": "^2.0.1",
+    "standard": "^5.2.1",
+    "standard-reporter": "^1.0.5"
   },
   "scripts": {
-    "start": "gulp watch --harmony_proxies",
-    "prepublish": "gulp prepublish",
+    "start": "gulp test --watch --bail --no-exit --full-trace --harmony_proxies",
+    "prepublish": "standard | standard-reporter --stylish && gulp prepublish",
     "test": "gulp test --full-trace --harmony_proxies",
     "release": "cut-release"
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "bluebird": "^2.9.34",
+    "co": "^4.6.0",
     "debug": "^2.2.0",
     "error-subclass": "^1.0.2",
     "harmony-reflect": "^1.4.0",
     "lodash": "^3.10.1"
+  },
+  "standard": {
+    "parser": "babel-eslint",
+    "ignore": [
+      "dist/"
+    ]
   }
 }
