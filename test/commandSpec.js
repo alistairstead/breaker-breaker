@@ -7,7 +7,7 @@ chai.should();
 import { Command } from '../lib/command';
 import { CallbackTarget } from './fixtures/callback';
 
-describe.only('Command', function () {
+describe('Command', function () {
   let callback = new CallbackTarget();
 
   it('should wrap the supplied callable in a promise', function () {
