@@ -9,7 +9,7 @@ import { Timeout } from '../lib/timeout';
 import { Command } from '../lib/command';
 import { CallbackTarget } from './fixtures/callback';
 
-describe.only('Race', function () {
+describe('Race', function () {
   let callback = new CallbackTarget();
 
   it('should reject if the timout wins the race', function (done) {
