@@ -1,65 +1,75 @@
 /* global describe, it, beforeEach */
-'use strict'
+'use strict';
 
-import chai from 'chai'
-chai.should()
-import _ from 'lodash'
+import chai from 'chai';
+import sinon from 'sinon';
+import sinonChai from 'sinon-chai';
 
-import { Reflect } from 'harmony-reflect'
+chai.should();
+chai.use(sinonChai);
 
-import { Policy } from '../lib/policy'
+import { State } from '../lib/state';
+import { Policy } from '../lib/policy';
 
 describe('Policy', function () {
-  let policy = Policy.create()
+  let policy, state;
 
-  let closedState = {
-    failure_count: 0,
-    last_failure_time: undefined,
-  }
+  beforeEach(function () {
+    policy = Policy.create();
+    state = new State();
+  });
 
   it('should have a default invocation timeout', function () {
-    policy.invocation_timeout.should.equal(1000)
-  })
+    policy.invocation_timeout.should.equal(1000);
+  });
 
   it('should have a default failure threshold', function () {
-    policy.failure_threshold.should.equal(5)
-  })
+    policy.failure_threshold.should.equal(5);
+  });
 
   it('should have a default reset timeout', function () {
-    policy.reset_timeout.should.equal(30)
-  })
+    policy.reset_timeout.should.equal(1000);
+  });
 
   it.skip('should have a set of static constants that can be references', function () {
-    Policy.OPEN.should.equal('OPEN')
-  })
+    Policy.OPEN.should.equal('OPEN');
+  });
 
-  it('should have a method reset', function () {
-    policy.reset.should.be.a('function')
-  })
+  it('should have a method status', function () {
+    policy.status.should.be.a('function');
+  });
 
-  it('should have a method state', function () {
-    policy.state.should.be.a('function')
-  })
+  it('should throw an error if an instance of State is not supplied to satus', function () {
+    try {
+      policy.status();
+    } catch (e) {
+      e.message.should.include('Expected instance of State');
+    }
+  });
 
-  it('should be closed when the failure count does not equal or exceed the failure threshold', function () {
-    policy.state(closedState).should.equal('CLOSED')
-  })
+  it('should be CLOSED when the failure count does not equal or exceed the failure threshold', function () {
+    policy.status(state).should.equal('CLOSED');
+  });
 
-  it('should have a method fail', function () {
-    policy.fail.should.be.a('function')
-  })
+  it('should be OPEN when the failure count is equal or exceeds the failure threshold', function () {
+    let stubGetFailureCount = sinon.stub(state, 'getFailureCount');
+    stubGetFailureCount.returns(100);
+    policy.status(state).should.equal('OPEN');
+  });
 
-  it('should be open if the failure count equals the failure threshold', function () {
-    let state = Object.create(closedState)
-    _.times(5, function () {
-      state = policy.fail(state)
-    })
-    state.failure_count.should.equal(5)
-    policy.state(state).should.equal('OPEN')
-  })
+  it('should be HALFOPEN if is is OPEN but the reset_timout has expired', function () {
+    let stubGetLastFailureTime = sinon.stub(state, 'getLastFailureTime');
+    stubGetLastFailureTime.returns(new Date() - 1500);
+    let stubGetFailureCount = sinon.stub(state, 'getFailureCount');
+    stubGetFailureCount.returns(100);
+    policy.status(state).should.equal('HALFOPEN');
+  });
 
-  it('should have a method timeout', function () {
-    policy.timeout.should.be.a('function')
-  })
-
-})
+  it('should be still OPEN if the reset_timeout has not expired', function () {
+    let stubGetLastFailureTime = sinon.stub(state, 'getLastFailureTime');
+    stubGetLastFailureTime.returns(new Date());
+    let stubGetFailureCount = sinon.stub(state, 'getFailureCount');
+    stubGetFailureCount.returns(100);
+    policy.status(state).should.equal('OPEN');
+  });
+});

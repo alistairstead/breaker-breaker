@@ -12,10 +12,46 @@ $ npm install --save breaker-breaker
 ## Usage
 
 ```js
-var breakerBreaker = require('breaker-breaker');
+var Breaker = require('breaker-breaker');
+let request = Breaker.create(require('request'), 'request::npm.org', {
+  invocation_timeout: 1000
+});
 
-breakerBreaker('Rainbow');
+request.get('http://www.npm.org', function (err, response) {
+  if (err) {
+    // handle the error
+  }
+
+  // use the response
+});
+
 ```
+
+## What Design Principles Underlie breaker-breaker?
+
+### breaker-breaker works by:
+
+* Preventing any single dependency from blocking the event loop or delaying callback and promise chains.
+* Shedding load and failing fast instead of queueing.
+* The fail fast option halts the execution of the long running call to the external dependency.
+* Leaves fallback functionality to the consuming application; error callback, promise reject or event observers within the consumer should manage the fallback functionality.
+
+
+
+
+
+
+
+
+
+Using isolation techniques (such as bulkhead, swimlane, and circuit breaker patterns) to limit the impact of any one dependency.
+Optimizing for time-to-discovery through near real-time metrics, monitoring, and alerting
+Optimizing for time-to-recovery by means of low latency propagation of configuration changes and support for dynamic property changes in most aspects of Hystrix, which allows you to make real-time operational modifications with low latency feedback loops.
+Protecting against failures in the entire dependency client execution, not just in the network traffic.
+
+## Known Issues
+
+* This can trigger a V8 bug with 'illegal access' errors being thrown see: [https://github.com/strongloop/express/issues/2652](https://github.com/strongloop/express/issues/2652) Using iojs-v3.0.0 resolves this non user space error.
 
 ## License
 

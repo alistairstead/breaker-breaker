@@ -1,33 +1,33 @@
-'use strict'
+'use strict';
 
 export class SyncronousTarget {
 
   methodWillSucceed () {
-    return true
+    return true;
   }
 
   methodWillFail () {
-    return false
+    return false;
   }
 
   methodWillThrow () {
-    throw new Error('Target threw an error')
+    throw new Error('Target threw an error');
   }
 
   methodWillTimeout (milliseconds = 3000) {
     setTimeout(function () {
-      return 'timeout'
-    }, milliseconds)
+      return 'timeout';
+    }, milliseconds);
   }
 
   methodWillBlockButNotTimeout (milliseconds = 500) {
     setTimeout(function () {
-      return 'timeout'
-    }, milliseconds)
+      return 'timeout';
+    }, milliseconds);
   }
 
   get propertyWillSucceed () {
-    return true
+    return true;
   }
 
 }
