@@ -4,7 +4,6 @@ var gulp = require('gulp');
 var gutil = require('gulp-util');
 var mocha = require('gulp-mocha');
 var istanbul = require('gulp-istanbul');
-var nsp = require('gulp-nsp');
 var coveralls = require('gulp-coveralls');
 var babel = require('gulp-babel');
 var isparta = require('isparta');
@@ -69,10 +68,6 @@ gulp.task('tdd', function (done) {
   ], ['test']).on('error', gutil.log);
 });
 
-gulp.task('nsp', function (cb) {
-  nsp('package.json', cb);
-});
-
 gulp.task('coveralls', ['test'], function () {
   if (!process.env.CI) {
     return;
@@ -88,5 +83,5 @@ gulp.task('babel', function () {
     .pipe(gulp.dest('dist'));
 });
 
-gulp.task('prepublish', ['nsp', 'babel']);
+gulp.task('prepublish', ['babel']);
 gulp.task('default', ['test', 'coveralls']);
