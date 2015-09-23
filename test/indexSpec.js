@@ -8,8 +8,6 @@ import sinonChai from 'sinon-chai';
 chai.should();
 chai.use(sinonChai);
 
-import { Reflect } from 'harmony-reflect';
-
 import { Breaker } from '../lib';
 import * as error from '../lib/error';
 import { SyncronousTarget } from './fixtures/syncronous';
@@ -160,6 +158,5 @@ describe('Breaker', () => {
       proxied.methodWillSucceed().should.equal('Success');
       proxied.methodWillFail().should.equal('Fail');
     });
-
   });
 });

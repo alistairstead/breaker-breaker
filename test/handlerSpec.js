@@ -1,4 +1,4 @@
-/* global describe, it, beforeEach */
+/* global describe, it, beforeEach, context */
 'use strict';
 
 import chai from 'chai';
@@ -8,12 +8,11 @@ import sinonChai from 'sinon-chai';
 chai.should();
 chai.use(sinonChai);
 
-import { Reflect } from 'harmony-reflect';
+// Reflect shims the harmony Proxy implementation to the ES6 API
+import { Reflect } from 'harmony-reflect'; // eslint-disable-line
 
 import { Handler } from '../lib/handler';
 import { Policy } from '../lib/policy';
-
-import { Promise } from 'bluebird';
 
 // TODO reduce test complexity by injecting a spy and only testing interaction not results
 describe('Handler', function () {
@@ -38,11 +37,6 @@ describe('Handler', function () {
     });
   });
 
-  context.skip('Raw Promise', function () {
-    let target = new Promise(function (resolve, reject) {});
-    let proxied = new Proxy(target, new Handler(Policy.create()));
-  });
-
-  context.skip('Middleware', function () {});
-
+  context.skip('Raw Promise', () => {});
+  context.skip('Middleware', () => {});
 });

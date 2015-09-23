@@ -26,7 +26,6 @@ export class PromiseTarget {
         reject();
       }, milliseconds);
     });
-
   }
 
 }

@@ -1,9 +1,6 @@
 'use strict';
 
 import co from 'co';
-import dbug from 'debug';
-
-let debug = dbug('breaker/fixture/callback');
 
 function sleep (ms) {
   return function (done) {
