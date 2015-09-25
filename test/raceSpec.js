@@ -13,13 +13,13 @@ describe('Race', function () {
   let callback = new CallbackTarget();
 
   it('should reject if the timout wins the race', function (done) {
-    new Race(new Timeout(), new Command(callback.methodWillTimeout, undefined, [function callback (response) {
+    new Race(new Timeout(), new Command(callback.methodWillTimeout, undefined, [(response) => {
       return response;
     }])).then(
-      function resolve (result) {
+      (result) => {
         throw new Error('This call should not resolve');
       },
-      function reject (err) {
+      (err) => {
         err.should.equal('Command timeout');
         done();
       }
@@ -27,14 +27,14 @@ describe('Race', function () {
   });
 
   it('should resolve if the command wins the race', function (done) {
-    new Race(new Timeout(5000), new Command(callback.methodWillBlockButNotTimeout, undefined, [function callback (response) {
+    new Race(new Timeout(5000), new Command(callback.methodWillBlockButNotTimeout, undefined, [(response) => {
       return response;
     }])).then(
-      function resolve (result) {
+      (result) => {
         result.should.equal('Success');
         done();
       },
-      function reject (err) {
+      (err) => {
         throw new Error(err);
       }
     );
