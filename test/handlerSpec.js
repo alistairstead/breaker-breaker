@@ -13,18 +13,19 @@ import { Reflect } from 'harmony-reflect'; // eslint-disable-line
 
 import { Handler } from '../lib/handler';
 import { Policy } from '../lib/policy';
+import { State } from '../lib/state';
 
 // TODO reduce test complexity by injecting a spy and only testing interaction not results
-describe('Handler', function () {
+describe('Handler', () => {
   /**
    * Wrap a function directly e.g. a middleware method
    */
-  context.skip('Raw Function', function () {
+  context.skip('Raw Function', () => {
     let target = function (callback) {
       callback();
     };
     let callback = sinon.spy();
-    let proxied = new Proxy(target, new Handler(Policy.create()));
+    let proxied = new Proxy(target, new Handler(Policy.create(), 'test', new State()));
 
     beforeEach(function (done) {
       callback.reset();

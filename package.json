@@ -21,53 +21,43 @@
     "callback"
   ],
   "devDependencies": {
-    "babel": "^5.8.23",
-    "babel-eslint": "^4.1.1",
+    "babel": "latest",
+    "babel-eslint": "^4.1.3",
     "bluebird": "^2.9.34",
-    "chai": "^3.2.0",
+    "chai": "latest",
+    "co": "^4.6.0",
+    "coveralls": "latest",
+    "cucumber": "latest",
     "cut-release": "^0.2.1",
     "express": "^4.13.3",
-    "gulp": "^3.9.0",
-    "gulp-babel": "^5.1.0",
-    "gulp-coveralls": "^0.1.0",
-    "gulp-exclude-gitignore": "^1.0.0",
-    "gulp-istanbul": "^0.10.0",
-    "gulp-jscs": "^1.1.0",
-    "gulp-jshint": "^1.5.3",
-    "gulp-mocha": "^2.1.3",
-    "gulp-plumber": "^1.0.0",
-    "gulp-util": "^3.0.6",
-    "isparta": "^3.0.4",
-    "jsdom": "^6.3.0",
-    "jshint-stylish": "^1.0.0",
-    "nsp": "^1.1.0",
+    "isparta": "latest",
+    "istanbul": "latest",
+    "mocha": "latest",
+    "nsp": "latest",
     "request": "^2.61.0",
-    "run-sequence": "^1.1.2",
-    "semistandard": "^7.0.2",
-    "sinon": "^1.16.1",
-    "sinon-chai": "^2.8.0",
-    "standard-reporter": "^1.0.5"
+    "semistandard": "latest",
+    "sinon": "latest",
+    "sinon-chai": "latest",
+    "standard-reporter": "latest"
   },
   "scripts": {
-    "start": "gulp test --watch --harmony_proxies",
-    "prepublish": "npm run standard -s && npm run security -s && gulp prepublish",
-    "test": "npm run standard -s && gulp test --full-trace --harmony_proxies",
-    "standard": "semistandard | standard-reporter --stylish",
+    "start": "npm run tdd -s",
+    "prepublish": "npm run standard -s && npm run security -s && dist",
+    "pretest": "npm run standard -s",
+    "test": "./node_modules/.bin/babel-node --harmony_proxies ./node_modules/.bin/isparta cover ./node_modules/.bin/_mocha -- --compilers js:babel/register",
+    "tdd": "mocha --harmony-proxies --compilers js:babel/register --check-leaks --watch",
+    "bdd": "cucumber.js --compilers js:babel/register --format pretty",
+    "standard": "semistandard --parser babel-eslint | standard-reporter --stylish",
+    "coveralls": "cat ./coverage/lcov.info | coveralls",
     "security": "nsp audit-package",
+    "dist": "babel src --out-dir dist",
     "release": "cut-release"
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "co": "^4.6.0",
     "debug": "^2.2.0",
     "error-subclass": "^1.0.2",
     "harmony-reflect": "^1.4.0",
     "lodash": "^3.10.1"
-  },
-  "standard": {
-    "parser": "babel-eslint",
-    "ignore": [
-      "dist/"
-    ]
   }
 }

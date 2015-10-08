@@ -23,7 +23,7 @@ describe('request', () => {
     server.close();
   });
 
-  it.skip('should wrap request and leave the callback API intact', (done) => {
+  it('should wrap request and leave the callback API intact', (done) => {
     breaker.get('http://127.0.0.1:3000/will/succeed', (error, response, body) => {
       if (!error && response.statusCode === 200) {
         body.should.equal('Success');

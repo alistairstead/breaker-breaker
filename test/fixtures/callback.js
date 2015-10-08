@@ -36,7 +36,7 @@ export class CallbackTarget {
     return co(function * () {
       return yield timeout();
     }).then(function () {
-      Reflect.apply(callback, undefined, [null, 'Success']);
+      callback(null, 'Success');
     });
   }
 
@@ -44,7 +44,7 @@ export class CallbackTarget {
     return co(function * () {
       return yield delay();
     }).then(function () {
-      Reflect.apply(callback, undefined, [null, 'Success']);
+      callback(null, 'Success');
     });
   }
 

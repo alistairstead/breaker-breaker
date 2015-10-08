@@ -64,5 +64,5 @@ Apache-2.0 © [Alistair Stead](www.designdisclosure.com)
 [travis-url]: https://travis-ci.org/alistairstead/breaker-breaker
 [daviddm-image]: https://david-dm.org/alistairstead/breaker-breaker.svg?theme=shields.io
 [daviddm-url]: https://david-dm.org/alistairstead/breaker-breaker
-[coveralls-image]: https://coveralls.io/repos/alistairstead/breaker-breaker/badge.svg
+[coveralls-image]: https://coveralls.io/repos/alistairstead/breaker-breaker/badge.svg?branch=master&service=github
 [coveralls-url]: https://coveralls.io/r/alistairstead/breaker-breaker
