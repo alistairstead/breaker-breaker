@@ -46,11 +46,11 @@
     "pretest": "npm run standard -s",
     "test": "./node_modules/.bin/babel-node --harmony_proxies ./node_modules/.bin/isparta cover ./node_modules/.bin/_mocha -- --compilers js:babel/register",
     "tdd": "mocha --harmony-proxies --compilers js:babel/register --check-leaks --watch",
-    "bdd": "cucumber.js --compilers js:babel/register --format pretty",
+    "bdd": "cucumber.js --compilers babel/register --format pretty",
     "standard": "semistandard --parser babel-eslint | standard-reporter --stylish",
     "coveralls": "cat ./coverage/lcov.info | coveralls",
     "security": "nsp audit-package",
-    "dist": "babel src --out-dir dist",
+    "dist": "babel lib --out-dir dist",
     "release": "cut-release"
   },
   "license": "Apache-2.0",
